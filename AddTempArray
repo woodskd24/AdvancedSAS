@@ -1,0 +1,16 @@
+data work.TestScores;    
+    set pg3.test_answers;
+    Score=0; 
+    array EmpAnswer[10] Q1-Q10;   
+    array CorAnswer[10] $ 1 _temporary_ 
+          ('A','C','C','B','E','E','D','B','B','A');
+    do i=1 to 10;
+       if EmpAnswer[i]=CorAnswer[i] then Score+1;
+    end;
+    drop i;
+run;
+
+title 'Employee Test Results';
+proc print data=work.TestScores;
+run;
+title;
