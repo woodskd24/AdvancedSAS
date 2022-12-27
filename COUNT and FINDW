@@ -1,0 +1,28 @@
+**************************************************************;
+*  LESSON 2, PRACTICE 2                                      *;
+**************************************************************;
+  
+data work.SouthRim;
+    set pg3.np_grandcanyon;
+    NumSouth=count(Comments,'South','i');  
+    if NumSouth>0;
+run;
+
+title 'Grand Canyon Comments Regarding South Rim';
+proc print data=work.SouthRim;
+run;
+title;
+run;
+
+data work.SouthRim;
+    set pg3.np_grandcanyon;
+    NumSouth=count(Comments,'South','i');  
+    if NumSouth>0;
+    SouthWordPos=findw(Comments,'South','  .','ei');
+    AfterSouth=scan(Comments,SouthWordPos+1,' .');
+run;
+
+title 'Grand Canyon Comments Regarding South Rim';
+proc print data=work.SouthRim;
+run;
+title;
