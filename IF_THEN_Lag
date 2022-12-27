@@ -1,0 +1,15 @@
+**************************************************************;
+*  LESSON 2, PRACTICE 1                                      *;
+**************************************************************;
+   
+data work.ParkTraffic2016;
+    set pg3.np_2016traffic;
+    by ParkCode;
+    PrevMthTC=lag1(TrafficCount);
+    if first.ParkCode=1 then PrevMthTC=.;
+    OneMthChange=TrafficCount-PrevMthTC;
+run;
+
+title '2016 National Park Traffic Counts';
+proc print data=work.ParkTraffic2016;
+run;
