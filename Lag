@@ -1,0 +1,26 @@
+************************************************************;
+*  Activity 2.02                                           *;
+************************************************************;
+*  1) Complete the assignment statement for Open1MnthBack, *;
+*     which is equal to the Open value from one previous   *;
+*     month.                                               *;
+*  2) Complete the assignment statement for Open2MnthBack, *;
+*     which is equal to the Open value from two previous   *;
+*     months.                                              *;
+*  3) Run the program and view the results.                *;
+*  4) What is the three-month average (Open3MnthAvg) for   *;
+*     02MAR2010?                                           *;
+************************************************************;
+
+data work.stockmovingavg;
+    set pg3.stocks_ABC(drop=Close);
+    Open1MnthBack=lag(Open);
+    Open2MnthBack=lag2(Open);
+    Open3MnthAvg=mean(Open,Open1MnthBack,Open2MnthBack);
+    format Open3MnthAvg 8.2;
+run;
+
+title 'Three Month Moving Average on Opening Stock Price'; 
+proc print data=work.stockmovingavg noobs;
+run;
+title;
