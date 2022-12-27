@@ -1,0 +1,14 @@
+ data work.DublinMadrid2017(drop=Month);
+     set pg3.weather_dublinmadrid_monthly2017
+        (keep=City Temp1-Temp12);
+     array Temperature[12] Temp1-Temp12;
+     do Month=1 to 12;
+        Temperature[Month]=(Temperature[Month]-32)*5/9;
+     end;
+     format Temp1-Temp12 6.1;
+run;
+
+title 'Average Monthly Celsius Temperatures for 2017';
+proc print data=work.DublinMadrid2017;
+run;
+title;
