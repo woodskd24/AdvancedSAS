@@ -1,0 +1,21 @@
+data work.MaxWind;
+    array MWTable[1980:2016,4] _temporary_;  
+    if _N_=1 then do S=1980 to 2016;
+       set pg3.storm_maxwindseasqtr;
+       array MWQ[4] MaxWindQ1-MaxWindQ4;
+       do Q=1 to 4;
+          MWTable[S,Q]=MWQ[Q];
+       end;
+    end;
+    set pg3.storm_stats;
+    Qtr=qtr(StartDate);
+    MaxWindSQ=MWTable[Season,Qtr];
+    Difference=MaxWindMPH-MaxWindSQ;
+    drop S Q MaxWindQ1-MaxWindQ4;
+run;
+
+title 'Maximum Winds for Storms Between 1980 and 2016';
+proc print data=work.MaxWind;
+    var Season Qtr Name MaxWindMPH MaxWindSQ Difference; 
+run;
+title;
