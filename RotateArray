@@ -1,0 +1,18 @@
+data work.DublinPrecipRotate;
+    set pg3.weather_dublinmadrid_monthly5yr
+       (keep=City Year PrecipQ1-PrecipQ4);
+    where City='Dublin';
+    array Q[4] PrecipQ1-PrecipQ4;
+    do Quarter =1 to 4;
+    Precip=Q[Quarter];
+    output;
+    end;
+
+title 'Average Quarterly Precipitation (CM) for Dublin';
+proc sgplot data=work.DublinPrecipRotate;
+    vbar Quarter / response=Precip stat=mean datalabel
+                   datalabelattrs=(size=12pt);
+    format Precip 6.2;
+run;
+title;
+ 
