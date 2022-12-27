@@ -1,0 +1,23 @@
+  
+data work.NationalPreserves;
+    set pg3.np_acres;
+    Position=prxmatch('/N PRES\s|N PRESERVE\s|NPRES\s|NPRE\s/',ParkName);
+    if Position ne 0;
+run;
+
+title 'National Preserves (NPRE)';
+proc print data=work.NationalPreserves;
+run;
+title;
+
+data work.NationalPreserves;
+    set pg3.np_acres;
+    Position=prxmatch('/N PRES\s|N PRESERVE\s|NPRES\s|NPRE\s/',ParkName);
+    if Position ne 0;
+    NewName=prxchange('s/N PRES\s|N PRESERVE\s|NPRES\s/NPRE /',1,ParkName);
+run;
+
+title 'National Preserves (NPRE)';
+proc print data=work.NationalPreserves;
+run;
+title;
