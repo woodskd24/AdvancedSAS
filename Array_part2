@@ -1,0 +1,34 @@
+data work.MonthlyOcc;
+    set pg3.eu_occ(drop=Geo);
+    OccTotal=sum(Hotel,ShortStay,Camp);
+    array OccType[3] Hotel ShortStay Camp;
+    array OccPct[3] HotelPct ShortStayPct CampPct;
+    do Num=1 to 3;
+       OccPct[Num]=OccType[Num]/OccTotal;
+    end;
+    format Hotel ShortStay Camp OccTotal comma16.;
+    drop Num;
+run;
+
+title 'Percentage of Occupancy by Type';
+proc print data=work.MonthlyOcc;
+run;
+title;
+
+data work.MonthlyOcc;
+    set pg3.eu_occ(drop=Geo);
+    OccTotal=sum(Hotel,ShortStay,Camp);
+    array OccType[3] Hotel ShortStay Camp;
+    array OccPct[3] HotelPct ShortStayPct CampPct;
+    do Num=1 to 3;
+       OccPct[Num]=OccType[Num]/OccTotal;
+    end;
+    format Hotel ShortStay Camp OccTotal comma16. 
+           HotelPct ShortStayPct CampPct percent8.1;
+    drop Num;
+run;
+
+title 'Percentage of Occupancy by Type';
+proc print data=work.MonthlyOcc;
+run;
+title;
