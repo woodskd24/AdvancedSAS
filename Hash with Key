@@ -1,0 +1,17 @@
+data work.storm_cat345_facts;
+    if _N_=1 then do;
+       if 0 then set pg3.storm_range;
+	  declare hash Storm(dataset:'pg3.storm_range');
+	  Storm.definekey('StartYear','Name','Basin');
+	  Storm.definedata('Wind1','Wind2','Wind3','Wind4');
+	  Storm.definedone(); 
+   end;
+   set pg3.storm_summary_cat345;
+   if Storm.find(key:year(StartDate),key:Name,key:Basin)=0;
+    drop StartYear;
+run;
+
+title 'Storm Statistics for Category 3, 4, and 5';
+proc print data=work.storm_cat345_facts;  
+run;
+title;
