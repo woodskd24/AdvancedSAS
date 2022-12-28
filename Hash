@@ -1,0 +1,10 @@
+data work.Top5TempPrecip;
+    length City $ 11 Month TempMonAvg PrecipMonSum 8;
+    if _N_=1 then do;
+       declare hash Monthly(dataset: 'pg3.weather_ustop5_monthly2017');
+       Monthly.definekey('City','Month');
+       Monthly.definedata('TempMonAvg','PrecipMonSum');
+       Monthly.definedone();
+       call missing (City, Month, TempMonAvg, PrecipMonSum);
+    end;
+run;
