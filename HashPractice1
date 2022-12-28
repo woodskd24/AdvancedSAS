@@ -1,0 +1,31 @@
+data work.acreage;
+    length ParkCode $ 4 ParkName $ 115 Type $ 28;
+    if _N_=1 then do;
+       declare hash ParkDesc(dataset:'pg3.np_codelookup');
+       ParkDesc.definekey('ParkCode');
+       ParkDesc.definedata('ParkName','Type');
+       ParkDesc.definedone();
+       call missing(ParkCode,ParkName,Type);
+       declare hash Acreage(ordered:'descending', multidata:'yes');
+       Acreage.definekey('GrossAcres');
+       Acreage.definedata('ParkCode','ParkName','Type',
+                          'State','GrossAcres');
+       Acreage.definedone();
+    end;
+    set pg3.np_acres2 end=Last;
+    ParkCode=upcase(ParkCode);
+    RC=ParkDesc.find(key:ParkCode);  
+    if RC=0 then Acreage.add();
+    if Last=1 then Acreage.output(dataset:'work.acreage_sort');
+    drop RC;
+run; 
+
+title 'Gross Acres for National Parks Sorted by ParkCode';
+proc print data=work.acreage; 
+run; 
+title;
+
+title 'Gross Acres for National Parks Sorted by Gross Acres';
+proc print data=work.acreage_sort; 
+run; 
+title;
