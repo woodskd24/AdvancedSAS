@@ -1,0 +1,15 @@
+proc format;
+    picture shares 
+            low-high='000,000,009 shares';                                    
+    picture usd (default=11)
+            low-<0='009.99 USD' (prefix='-')
+            0-high='009.99 USD';
+run;
+
+data work.stock_report;
+    set pg3.stocks(drop=High Low);
+    VolumeChar=catx(' ',put(Volume,comma18.),'shares');
+    DailyChange=Close-Open;
+    DailyChangeChar=catx(' ',DailyChange,'USD');
+    format Volume shares. DailyChange usd.;
+run;
