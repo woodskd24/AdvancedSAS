@@ -1,0 +1,20 @@
+proc fcmp outlib=pg3.myfunctions.baseball;
+    function flip(LastFirst $) $ 18;
+      return(catx(' ',scan(LastFirst,2,','),
+                      scan(LastFirst,1,',')));
+    endsub;
+run;
+
+options cmplib=pg3.myfunctions;
+
+data work.FlipNames;
+    set sashelp.baseball(keep=Name Team);
+    Player=flip(Name);
+    drop Name;
+run;
+
+title 'Baseball Players and Teams';
+proc print data=work.FlipNames;
+    var Player Team;
+run;
+title;
