@@ -1,0 +1,16 @@
+proc fcmp outlib=pg3.funcs.weather;
+    function FtoC(TempF);
+       TempC=round((TempF-32)*5/9,.01);
+       return(TempC);
+    endsub;
+    function INtoCM(Pin);
+       Pcm=Pin*2.54;
+       return(Pcm);
+    endsub;
+run;
+
+proc sql;
+    select Date, Tavg, Tunit, FtoC(Tavg) as TavgC, 
+           Precip, Punit, INtoCM(Precip) as PrecipCM
+    from pg3.weather_ny_daily2017;
+quit;
