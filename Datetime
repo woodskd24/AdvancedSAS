@@ -1,0 +1,13 @@
+proc format;
+    picture MyDate (default=14) 
+            low-high = '%A-%Y' (datatype=date);
+    picture MyMonth (default=17)
+            low-high='%B of %Y' (datatype=date);
+run;
+
+title 'Frequency of 2017 US Tornadoes';
+proc freq data=pg3.tornado_2017 order=freq;
+    table BeginDate;
+    format BeginDate MyMonth.;
+run;
+title;
