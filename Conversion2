@@ -1,0 +1,18 @@
+proc fcmp outlib=pg3.myfunctions.class;
+    function CalcScore(T1, T2, T3, T4, F);
+      FScore=round(sum(of T1-T4, 2*F)/6,.01);
+      return(FScore);
+    endsub;
+run;
+
+options cmplib=pg3.myfunctions;
+
+data work.scores;
+    set pg3.class_tests;
+    FinalScore=CalcScore(of Test1-Test4, Final);
+run;
+
+title 'Student Scores';
+proc print data=work.scores;
+run;
+title;
